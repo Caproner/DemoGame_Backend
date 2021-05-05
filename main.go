@@ -15,6 +15,8 @@ func main() {
 
 	// 全局中间件加这里
 
+	// 定时任务放这里
+
 	// 找不到路由则返回404，并给出错误信息
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
