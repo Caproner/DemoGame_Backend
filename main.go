@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Caproner/DemoGame_Backend/routers"
+	"github.com/Caproner/DemoGame_Backend/tasks/global"
 
 	"github.com/facebookgo/grace/gracehttp"
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,7 @@ func main() {
 	// 全局中间件加这里
 
 	// 定时任务放这里
+	global.StartGlobalTask()
 
 	// 找不到路由则返回404，并给出错误信息
 	router.NoRoute(func(c *gin.Context) {

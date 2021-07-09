@@ -10,6 +10,14 @@ type TestHandlerRsp struct {
 	Msg interface{} `json:"msg"`
 }
 
+func InitRouter(router *gin.Engine) *gin.Engine {
+	testRouter := router.Group("/api/test").Use()
+	{
+		testRouter.GET("/echo", TestHandler)
+	}
+	return router
+}
+
 // Test Echo Handler
 func TestHandler(c *gin.Context) {
 	rsp := TestHandlerRsp{
