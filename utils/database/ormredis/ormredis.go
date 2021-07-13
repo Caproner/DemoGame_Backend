@@ -8,14 +8,15 @@ import (
 )
 
 //var defaultctx = context.Background()
-var defaultRedis *DBRedis
+var defaultRedis *dBRedis
 
-type DBRedis struct {
+type dBRedis struct {
 	redisClient *redis.Client
 }
 
+// InitRedis 初始化redis数据库
 func InitRedis(){
-	defaultRedis = &DBRedis{}
+	defaultRedis = &dBRedis{}
 	defaultRedis.redisClient = redis.NewClient(&redis.Options{
 		Addr : "127.0.0.1:6379",
 		Password : "",
@@ -29,12 +30,12 @@ func InitRedis(){
 	log.Info(pong)
 }
 
-// 外部调用，通常来说事dbapi调用
-func RDB() *DBRedis{
+// RDB 外部调用，通常来说事dbapi调用
+func RDB() *dBRedis{
 	return defaultRedis
 }
 
-func (drs *DBRedis)KVSet(key string, value interface{}) error{
+func (drs *dBRedis)KVSet(key string, value interface{}) error{
 	marvalue, err := json.Marshal(value)
 	if err != nil{
 		return err
@@ -51,7 +52,7 @@ func (drs *DBRedis)KVSet(key string, value interface{}) error{
 
 }
 
-func (drs *DBRedis)KVGet(key string) (interface{}, error){
+func (drs *dBRedis)KVGet(key string) (interface{}, error){
 	r, err := drs.redisClient.Get( key).Result()
 	if err == redis.Nil {
 		return nil, errors.New("redis empty")
@@ -59,7 +60,7 @@ func (drs *DBRedis)KVGet(key string) (interface{}, error){
 	return r, err
 }
 
-func (drs *DBRedis)Incr(key string)int64{
+func (drs *dBRedis)Incr(key string)int64{
 	num, _ := drs.redisClient.Incr( key).Result()
 	return num
 }

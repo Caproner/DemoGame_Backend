@@ -14,6 +14,7 @@ require (
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/google/go-cmp v0.5.6 // indirect
+	github.com/gorilla/websocket v1.4.2
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/medivhzhan/weapp/v2 v2.4.2
 	github.com/onsi/ginkgo v1.15.0 // indirect

@@ -5,7 +5,7 @@ package gm
 */
 
 import (
-	"github.com/Caproner/DemoGame_Backend/services/playersvr"
+	"github.com/Caproner/DemoGame_Backend/include/variable"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
 	"github.com/gin-gonic/gin"
 )
@@ -14,17 +14,18 @@ type GMHandlerRps struct {
 	ShowSvr interface{}
 }
 
+// 暂时有bug未能实现
+// InitRouter初始化gm路由
 func InitRouter(router *gin.Engine) *gin.Engine {
-	gmrouter := router.Group("/gm").Use()
+	playerRouter := router.Group("/gm").Use()
 	{
-		gmrouter.GET("/showSvr", showSvrHandler)
+		playerRouter.GET("/svr", svrHandler)
 	}
 	return router
 }
 
-func showSvrHandler(ctx *gin.Context) {
-	rsp := GMHandlerRps{
-		ShowSvr: playersvr.DefaultSvr(),
-	}
-	responseresult.ResponseOk(ctx, rsp)
+func svrHandler(ctx *gin.Context) {
+	svr := variable.PlayerSvr
+	responseresult.ResponseOk(ctx, svr)
+
 }

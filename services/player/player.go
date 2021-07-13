@@ -1,23 +1,48 @@
 package player
 
 import (
-	"github.com/Caproner/DemoGame_Backend/services/playersvr"
-	"github.com/gin-gonic/gin"
+	r "github.com/Caproner/DemoGame_Backend/include/global/r/player"
+	"github.com/Caproner/DemoGame_Backend/include/variable"
+	"github.com/Caproner/DemoGame_Backend/utils/database/dbapi"
 )
 
-func PlayerLogin(openId, sessionKey string) int64 {
-	p := playersvr.LoadPlayer(openId)
+func PlayerLogin(openId, sessionKey string) *r.Player {
+	p := loadPlayer(openId)
 	p.SessionKey = sessionKey
-	playersvr.LoginPlayer(p)
-	return p.UUID
+	return p
 }
 
-//这里处理不同协议号的逻辑，并返回数据
-func PlayerAcrion(ctx *gin.Context){
-
+func loadPlayer(openId string) *r.Player {
+	player, err := dbapi.FindPlayer(openId)
+	if err != nil {
+		p := newPlayer(openId)
+		return p
+	}
+	return player
 }
 
-// 应该在校验那里获得了玩家openId，考虑数据唯一性，此处采用管道数据处理
-func doSwitchProto(ctx *gin.Context){
+func newPlayer(openID string) *r.Player {
+	uuID := dbapi.ItemLenAdd(variable.PlayerNumKey)
+	uuID = variable.PlayerBaseID + uuID
+	p := born(openID, uuID)
+	_ = dbapi.SavePlayer(p)
+	return p
+}
 
+func born(openID string, uuID int64) *r.Player {
+	return &r.Player{
+		OpenID: openID,
+		UUID:   uuID,
+
+		Bag:       make(map[int]interface{}),
+		Money:     make(map[int]int64),
+		Playing:   make(map[string]interface{}),
+		Task:      make(map[int]interface{}),
+		Cultivate: make(map[int]interface{}),
+		Mail:      make(map[int64]interface{}),
+		TimeClock: make(map[string]interface{}),
+
+		Log:  make([]interface{}, 0),
+		Goal: make([]interface{}, 0),
+	}
 }

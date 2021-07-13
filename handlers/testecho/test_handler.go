@@ -1,8 +1,9 @@
 package testecho
 
 import (
-	"github.com/Caproner/DemoGame_Backend/utils/database/ormredis"
 	"net/http"
+
+	"github.com/Caproner/DemoGame_Backend/utils/database/ormredis"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +12,7 @@ type TestHandlerRsp struct {
 	Msg interface{} `json:"msg"`
 }
 
+// InitRouter 简单的http接口测试
 func InitRouter(router *gin.Engine) *gin.Engine {
 	testRouter := router.Group("/api/test").Use()
 	{
@@ -35,9 +37,9 @@ func TestHandler(c *gin.Context) {
 func testKvHandler(context *gin.Context) {
 	key := context.Query("key")
 	value := context.Query("value")
-	_ = ormredis.RDB().KVSet(key,value)
-	vv,_ := ormredis.RDB().KVGet(key)
+	_ = ormredis.RDB().KVSet(key, value)
+	vv, _ := ormredis.RDB().KVGet(key)
 	context.JSON(http.StatusOK, gin.H{
-		"kv" : vv,
+		"kv": vv,
 	})
 }

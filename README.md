@@ -52,10 +52,22 @@ chore: 非代码修改用这个前缀，包括.gitignore，配置文件，数据
 项目包括如下几个文件/目录：
 
 + main.go：主文件，一般情况下不用动它（除非加中间件/代码整体重构/缺陷修复）
++ data: 数据文件，一般来说是由脚本生成并拷贝至此
++ include：类似头文件的宏变量存储
++ include/variable: 全局变量
++ include/global/r: 全局结构变量
++ log：后续日志文件落地路径
++ logic：相关的数据处理逻辑在这里新增
 + routers：路由层，存放web.go，作为整体服务路由。一般情况下不会有多出来的文件
 + handlers：句柄层，直接对接接口，仅负责简单的工作和调用逻辑层函数
 + services：逻辑层，对接句柄层，提供业务逻辑函数
++ services/player: 玩家结构数据，一般来说不用动（包含玩家结构的初始化和读取）
++ services/playerprocess: 玩家进程，一般来说不用动（包含玩家进程的初始化和循环逻辑）
++ services/playersvr: 玩家进程管理进程，一般来说不用动（包含玩家进程登记）
++ services/websocket：玩家socket建立和管理相关，一般来说不用动（包含websocket建立和登记）
 + utils：工具层，对接句柄层和逻辑层，提供业务无关的通用函数（例如算sha256，数据库工具，日志工具等）
++ utils/tr：常用的格式转换
++ utils/libsend：后续玩家信息返回的接口
 + tasks：定时任务存放在这里，由main.go来启动，下接services和utils
 + middlewares：全局中间件放这里，由main.go引入，并由routers选择在哪些路由启用哪些中间件
 + vendor：由go mod vendor自行生成和管理

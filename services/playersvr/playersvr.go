@@ -5,69 +5,32 @@ package playersvr
 */
 
 import (
-	"fmt"
-	"sync"
-
-	r "github.com/Caproner/DemoGame_Backend/app/global/record"
-	"github.com/Caproner/DemoGame_Backend/utils/database/dbapi"
+	r "github.com/Caproner/DemoGame_Backend/include/global/r/player"
+	"github.com/Caproner/DemoGame_Backend/utils/log"
+	"github.com/Caproner/DemoGame_Backend/utils/tr"
 )
 
-var playerSumNumKey = "playerSumNum"
-
-type playerSvr struct {
-	loop      int64
-	LineNum   int
-	PlayerMap map[string]interface{}
-	svrChan   chan r.Player
-	mux       sync.Mutex
+type PlayerSvr struct {
+	PlayerMap  map[string]*r.Player
+	Register   chan *r.Player
+	UnRegister chan *r.Player
 }
 
-func (svr *playerSvr) Loop() {
+func (svr *PlayerSvr) Loop() {
 	for {
 		select {
-		case player := <-svr.svrChan:
-			fmt.Println(player.UUID)
-			svr.PlayerMap[player.OpenId] = player
-			svr.LineNum++
+		case p := <-svr.Register:
+			puuid := tr.Int64ToString(p.UUID)
+			log.Info("player_", p.UUID, "had register")
+			svr.PlayerMap[puuid] = p
 		}
 	}
 }
 
-var defaultPlayerSvr *playerSvr
-
-func init() {
-	defaultPlayerSvr = &playerSvr{
-		loop:      0,
-		LineNum:   0,
-		PlayerMap: make(map[string]interface{}),
-		svrChan:   make(chan r.Player),
+func New() *PlayerSvr {
+	return &PlayerSvr{
+		PlayerMap:  make(map[string]*r.Player),
+		Register:   make(chan *r.Player),
+		UnRegister: make(chan *r.Player),
 	}
-}
-
-func DefaultSvr() *playerSvr {
-	return defaultPlayerSvr
-}
-
-func LoadPlayer(openId string) *r.Player {
-	player, err := dbapi.FindPlayer(openId)
-	if err != nil {
-		p := NewPlayer(openId)
-		return p
-	}
-	return player
-}
-
-var basePlayerNum = 10000
-
-func NewPlayer(openId string) *r.Player {
-	uuid := dbapi.ItemLenAdd(playerSumNumKey)
-	p := &r.Player{OpenId: openId, UUID: int64(basePlayerNum) + uuid}
-	_ = dbapi.SavePlayer(p)
-	return p
-}
-
-func LoginPlayer(p *r.Player) {
-	defaultPlayerSvr.mux.Lock()
-	defer defaultPlayerSvr.mux.Unlock()
-	defaultPlayerSvr.svrChan <- *p
 }
