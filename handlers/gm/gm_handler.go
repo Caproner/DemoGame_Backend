@@ -5,7 +5,6 @@ package gm
 */
 
 import (
-	"github.com/Caproner/DemoGame_Backend/include/variable"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +24,6 @@ func InitRouter(router *gin.Engine) *gin.Engine {
 }
 
 func svrHandler(ctx *gin.Context) {
-	svr := variable.PlayerSvr
-	responseresult.ResponseOk(ctx, svr)
+	responseresult.ResponseOk(ctx, 0,"svr")
 
 }

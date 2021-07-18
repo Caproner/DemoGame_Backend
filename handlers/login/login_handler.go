@@ -1,21 +1,14 @@
 package login
 
 import (
+	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
-
-	"github.com/Caproner/DemoGame_Backend/utils/log"
-
-	r "github.com/Caproner/DemoGame_Backend/include/global/r/player"
+	"github.com/Caproner/DemoGame_Backend/data/proto"
 	"github.com/Caproner/DemoGame_Backend/include/variable"
 	"github.com/Caproner/DemoGame_Backend/services/player"
-	"github.com/Caproner/DemoGame_Backend/services/playerprocess"
-	"github.com/Caproner/DemoGame_Backend/services/playersvr"
-	"github.com/Caproner/DemoGame_Backend/services/websocket/ws"
+	"github.com/Caproner/DemoGame_Backend/utils/log"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 	"github.com/medivhzhan/weapp/v2"
 )
 
@@ -31,60 +24,32 @@ func InitRouter(router *gin.Engine) *gin.Engine {
 
 // 检测vx接口返回信息并向Svr和wsHub注册
 func loginHandler(ctx *gin.Context) {
-	code := ctx.DefaultQuery("code", "no code login")
+	code := ctx.Query(variable.CODE)
 	openId, sessionKey, err := checkCode(code)
 	if err != nil {
-		responseresult.ResponseFalse(ctx, 200, "")
-	}
-
-	p := player.PlayerLogin(openId, sessionKey)
-
-	register(ctx, p)
-}
-
-// 升级成websocket协议
-func register(ctx *gin.Context, p *r.Player) {
-	// 新建一个player进程
-	ppc := playerprocess.New()
-	ppc.Player = p
-	go ppc.Loop()
-	variable.PlayerSvr.(*playersvr.PlayerSvr).Register <- p
-	lws := &websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool { return true },
-	}
-	conn, err := lws.Upgrade(ctx.Writer, ctx.Request, nil)
-	log.Info("register had create conn")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	if hub, ok := variable.WSHub.(*ws.WsHub); !ok {
-		log.Error("not right hub type adn return")
-		return
-	} else {
-		uuIDStr := strconv.FormatInt(p.UUID, 10)
-		wsc := &ws.WsClient{
-			Hub:     hub,
-			UUID:    uuIDStr,
-			Socket:  conn,
-			Sender:  make(chan []byte),
-			WsPSend: ppc.RecMsg,
-		}
-		log.Infof("wsc %s had create \n", wsc.UUID)
-		hub.Register <- wsc
-		go wsc.Read()
-		go wsc.Send()
+		responseresult.ResponseFalse(ctx, 200, 0, err.Error())
+	}else{
+		msg := proto.S2CLogin{OpenID: openId,SessionKey: sessionKey,Token: "no token"}
+		responseresult.ResponseOk(ctx, proto.MSGS2CLogin, msg)
 	}
 }
-
 // vx接口返回值,未做校验
 func checkCode(code string) (openId string, sessionKey string, err error) {
 	res, wxerr := weapp.Login(appid, secret, code)
 	if wxerr != nil {
 		err = wxerr
+	}else if res.ErrCode != 0{
+		log.Info(res.ErrMSG)
+		err = errors.New("vxapi check error:" + res.ErrMSG)
+	} else{
+		fmt.Println(res.ErrCode)
+		openId = res.OpenID
+		sessionKey = res.SessionKey
+		if player.PlayerLogin(openId,sessionKey) {
+			err = nil
+		}else{
+			err =  errors.New("load player error")
+		}
 	}
-	openId = res.OpenID
-	sessionKey = res.SessionKey
-	err = nil
 	return
 }

@@ -50,7 +50,6 @@ github.com/golang/protobuf/proto
 ## explicit
 # github.com/gorilla/websocket v1.4.2
 ## explicit
-github.com/gorilla/websocket
 # github.com/json-iterator/go v1.1.9
 github.com/json-iterator/go
 # github.com/kr/pretty v0.2.1

@@ -1,4 +1,4 @@
-package player
+package global
 
 type Player struct {
 	UUID       int64  // 角色id
@@ -8,6 +8,9 @@ type Player struct {
 	State      int    // 登录状态
 
 	Auth int // 玩家权限等级
+
+	Lv int //
+	Exp int64 //
 
 	Bag       map[int]interface{}    // 背包类型 => 背包数据
 	Money     map[int]int64          // 货币类型 => 货币数量

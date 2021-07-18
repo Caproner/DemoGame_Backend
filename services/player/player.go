@@ -1,38 +1,34 @@
 package player
 
 import (
-	r "github.com/Caproner/DemoGame_Backend/include/global/r/player"
-	"github.com/Caproner/DemoGame_Backend/include/variable"
+	rp "github.com/Caproner/DemoGame_Backend/include/global"
 	"github.com/Caproner/DemoGame_Backend/utils/database/dbapi"
 )
 
-func PlayerLogin(openId, sessionKey string) *r.Player {
-	p := loadPlayer(openId)
-	p.SessionKey = sessionKey
-	return p
+func PlayerLogin(openId, sessionKey string) bool {
+	return loadPlayer(openId,sessionKey)
 }
 
-func loadPlayer(openId string) *r.Player {
-	player, err := dbapi.FindPlayer(openId)
+func loadPlayer(openId, sessionKey string) bool {
+	_, err := dbapi.FindPlayer(openId)
 	if err != nil {
-		p := newPlayer(openId)
-		return p
+		return newPlayer(openId)
 	}
-	return player
+	return true
 }
 
-func newPlayer(openID string) *r.Player {
-	uuID := dbapi.ItemLenAdd(variable.PlayerNumKey)
-	uuID = variable.PlayerBaseID + uuID
-	p := born(openID, uuID)
+func newPlayer(openID string) bool {
+	p := born(openID)
 	_ = dbapi.SavePlayer(p)
-	return p
+	return true
 }
 
-func born(openID string, uuID int64) *r.Player {
-	return &r.Player{
+func born(openID string) *rp.Player {
+	return &rp.Player{
 		OpenID: openID,
-		UUID:   uuID,
+
+		Lv: 1,
+		Exp: int64(0),
 
 		Bag:       make(map[int]interface{}),
 		Money:     make(map[int]int64),

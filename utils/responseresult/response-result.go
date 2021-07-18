@@ -11,18 +11,18 @@ import (
 */
 
 // ResponseOk 返回便准ok信息 200
-func ResponseOk(ctx *gin.Context, result interface{}) {
+func ResponseOk(ctx *gin.Context, protoID int ,result interface{}) {
 	// fmt.Println(result)
 	ctx.JSON(http.StatusOK, gin.H{
-		"protoId": 0,
+		"protoId": protoID,
 		"data":    result,
 	})
 }
 
 // ResponseFalse 返回错误信息
-func ResponseFalse(ctx *gin.Context, state int, result interface{}) {
+func ResponseFalse(ctx *gin.Context, state int, protoID int, result interface{}) {
 	ctx.JSON(state, gin.H{
-		"protoId": 0,
+		"protoId": protoID,
 		"data":    result,
 	})
 }
