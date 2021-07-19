@@ -13,8 +13,8 @@ import (
 )
 
 // 个人申请数据，后期变更为配置数据
-var appid = "wx565c09529f19cbaa"
-var secret = "c841730a2f3f3fa58e00def83ecf2999"
+var appid = "wx8534674533e0c0d0"
+var secret = "3397873007ab85a4a9a8372a6faeb05e"
 
 // InitRouter 初始化login路由，并建立websocket链接
 func InitRouter(router *gin.Engine) *gin.Engine {
