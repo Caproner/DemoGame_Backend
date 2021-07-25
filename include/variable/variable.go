@@ -2,6 +2,7 @@ package variable
 
 var (
 	CODE	= "code"
-	OPENID  = "openID"
+	OPENID  = "OpenID"
 	PROTOID = "Proto"
+	TOKEN 	= "Token"
 )

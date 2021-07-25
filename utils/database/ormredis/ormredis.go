@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/Caproner/DemoGame_Backend/utils/log"
 	"github.com/go-redis/redis"
+	"time"
 )
 
 //var defaultctx = context.Background()
@@ -63,4 +64,27 @@ func (drs *dBRedis)KVGet(key string) (interface{}, error){
 func (drs *dBRedis)Incr(key string)int64{
 	num, _ := drs.redisClient.Incr( key).Result()
 	return num
+}
+
+func (drs *dBRedis)IsTimelessKeyActive(k string) bool{
+	if _, err := drs.redisClient.Get(k).Result();err != redis.Nil{
+		return true
+	}else{
+		return false
+	}
+}
+
+func (drs *dBRedis)TimeLessKeyUpate(k string) bool{
+	if _, err := drs.redisClient.Get(k).Result();err != redis.Nil{
+		_,_ = drs.redisClient.Del(k).Result()
+		if _, e := drs.redisClient.Set(k,0, 180 * time.Second).Result();e != nil{
+			log.Info(e)
+		}
+		return true
+	}else{
+		if _, e := drs.redisClient.Set(k,0, 180 * time.Second).Result();e != nil{
+			log.Info(e)
+		}
+		return false
+	}
 }

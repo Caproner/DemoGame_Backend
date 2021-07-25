@@ -2,25 +2,40 @@ package player
 
 import (
 	rp "github.com/Caproner/DemoGame_Backend/include/global"
+	"github.com/Caproner/DemoGame_Backend/include/localvar/timevar"
+	"github.com/Caproner/DemoGame_Backend/services/ptime"
 	"github.com/Caproner/DemoGame_Backend/utils/database/dbapi"
+	"github.com/Caproner/DemoGame_Backend/utils/log"
+	"time"
 )
 
-func PlayerLogin(openId, sessionKey string) bool {
-	return loadPlayer(openId,sessionKey)
+func PlayerLogin(openId, sessionKey string) (key string) {
+	p := loadPlayer(openId,sessionKey)
+	var has bool
+	if has = dbapi.UpdateToken(openId); !has{
+		ptime.SetTime(timevar.LoginTimeType, time.Now().Unix(), p)
+		ltt := ptime.GetTime(timevar.LastActionTimeType, p)
+		ptime.SetTime(timevar.OfflineTimeType, ltt, p)
+	}
+	key = dbapi.UserToken(openId)
+	if savef := dbapi.SavePlayer(p); savef != nil{
+		log.Info(savef)
+	}
+	return
 }
 
-func loadPlayer(openId, sessionKey string) bool {
-	_, err := dbapi.FindPlayer(openId)
+func loadPlayer(openId, sessionKey string) *rp.Player {
+	p, err := dbapi.FindPlayer(openId)
 	if err != nil {
 		return newPlayer(openId)
 	}
-	return true
+	return p
 }
 
-func newPlayer(openID string) bool {
+func newPlayer(openID string) *rp.Player{
 	p := born(openID)
 	_ = dbapi.SavePlayer(p)
-	return true
+	return p
 }
 
 func born(openID string) *rp.Player {

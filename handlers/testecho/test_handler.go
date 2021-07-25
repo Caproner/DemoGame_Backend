@@ -1,6 +1,7 @@
 package testecho
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Caproner/DemoGame_Backend/utils/database/ormredis"
@@ -12,12 +13,22 @@ type TestHandlerRsp struct {
 	Msg interface{} `json:"msg"`
 }
 
+type sss struct {
+	N interface{}`json:"opt"`
+	M interface{} `json:"m"`
+}
+
 // InitRouter 简单的http接口测试
 func InitRouter(router *gin.Engine) *gin.Engine {
 	testRouter := router.Group("/api/test").Use()
 	{
 		testRouter.GET("/echo", TestHandler)
 		testRouter.GET("/ts", testKvHandler)
+		testRouter.POST("/p", func(context *gin.Context) {
+			c := &sss{}
+			context.BindJSON(c)
+			fmt.Println(c)
+		})
 	}
 	return router
 }

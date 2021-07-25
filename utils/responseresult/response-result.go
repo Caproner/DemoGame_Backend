@@ -18,11 +18,3 @@ func ResponseOk(ctx *gin.Context, protoID int ,result interface{}) {
 		"data":    result,
 	})
 }
-
-// ResponseFalse 返回错误信息
-func ResponseFalse(ctx *gin.Context, state int, protoID int, result interface{}) {
-	ctx.JSON(state, gin.H{
-		"protoId": protoID,
-		"data":    result,
-	})
-}

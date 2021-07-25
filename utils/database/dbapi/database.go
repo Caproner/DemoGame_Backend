@@ -33,6 +33,21 @@ func ItemLenAdd(key string) int64 {
 	return findLenAddInRedis(key)
 }
 
+func CheckUserToken(openId string) bool{
+	key := UserToken(openId)
+	return ormredis.RDB().IsTimelessKeyActive(key)
+}
+
+func UpdateToken(openId string) bool{
+	key := UserToken(openId)
+	return ormredis.RDB().TimeLessKeyUpate(key)
+}
+
+func UserToken(openId string) string{
+	key := "ToKen_" + openId
+	return key
+}
+
 func findPlayerInRedis(openID string) (*rp.Player, error) {
 	rtype, err := ormredis.RDB().KVGet(openID)
 	if err != nil {

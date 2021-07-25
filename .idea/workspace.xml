@@ -2,8 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc163ac3-e68e-41da-aa69-2556d560d6b8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/include/localvar/cultivatevar/cultivatevar.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/pcul/pbuilds.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/pcul/pnpcs.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/player/actions12.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/player/actions13.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/player/actions14.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/plv/plv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/pmoney/pmoney.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/proto/proto.go" beforeDir="false" afterPath="$PROJECT_DIR$/data/proto/proto.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/login/login_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/login/login_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/player/player_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/player/player_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/testecho/test_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/testecho/test_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/localvar/timevar/timevar.go" beforeDir="false" afterPath="$PROJECT_DIR$/include/localvar/timevar/timevar.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/variable/variable.go" beforeDir="false" afterPath="$PROJECT_DIR$/include/variable/variable.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/playerauth/auth.go" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares/playerauth/auth.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/player/actionmoney.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/player/actions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/player/actionswitch.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/player/actionswitch.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/player/player.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/player/player.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/ptime/ptime.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/ptime/ptime.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/database/dbapi/database.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/database/dbapi/database.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/database/ormredis/ormredis.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/database/ormredis/ormredis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/responseresult/response-result.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/responseresult/response-result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/tr/tr.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tr/tr.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +75,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\common_cache_data\go_land\234_file\DemoGame_Backend\services\plv" />
       <recent name="D:\common_cache_data\go_land\234_file\DemoGame_Backend\api\factory" />
     </key>
   </component>
