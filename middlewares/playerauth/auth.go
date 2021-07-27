@@ -12,6 +12,7 @@ import (
 在这个模块会每次都校对前端发过来的token
 */
 
+// UserToken 为player组的中间件，检验token有效性
 func UserToken() gin.HandlerFunc{
 	return func(context *gin.Context) {
 		openID := context.Query(variable.OPENID)

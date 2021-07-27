@@ -4,6 +4,7 @@ import (
 	"github.com/Caproner/DemoGame_Backend/data/proto"
 	"github.com/Caproner/DemoGame_Backend/include/global"
 	"github.com/Caproner/DemoGame_Backend/services/pcul"
+	"github.com/Caproner/DemoGame_Backend/services/pplaying"
 	"github.com/Caproner/DemoGame_Backend/services/ptime"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,7 @@ func handleInfoGet(ctx *gin.Context, p *global.Player){
 		Times: ptime.GetTimes(p),
 		Builds: pcul.GetBuildS(p),
 		Npcs: pcul.GetNpcS(p),
+		Maps: pplaying.GetMapS(p),
 	}
 	responseresult.ResponseOk(ctx, proto.MSGS2CPlayerInfo, r)
 }

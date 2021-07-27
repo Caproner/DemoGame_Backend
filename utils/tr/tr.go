@@ -5,6 +5,7 @@ package tr
 */
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -32,6 +33,15 @@ func InterfaceToMIntInt64(d interface{})(r map[int]int64){
 	for i,k := range t {
 		r[StringToInt(i)] = FloatToInt64(k.(float64))
 	}
+	return
+}
+
+func InterfaceToMStringFace(d interface{})(r map[string]interface{}){
+	t := d.(map[string]interface{})
+	for k,v := range t {
+		fmt.Println(k,v)
+	}
+	r = t
 	return
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/Caproner/DemoGame_Backend/services/pcul"
 	"github.com/Caproner/DemoGame_Backend/services/plv"
 	"github.com/Caproner/DemoGame_Backend/services/pmoney"
+	"github.com/Caproner/DemoGame_Backend/services/pplaying"
 	"github.com/Caproner/DemoGame_Backend/services/ptime"
 	"github.com/Caproner/DemoGame_Backend/utils/log"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
@@ -61,6 +62,22 @@ func handleNpcsSync(ctx *gin.Context, p *global.Player){
 	r := &proto.C2SNpcsSync{}
 	_  = ctx.BindJSON(r)
 	if pcul.SyncNpcS(tr.InterfaceToIntList(r.Npcs), p){
+		responseresult.ResponseOk(ctx, proto.MSGS2COk, proto.S2COk{})
+	}else{
+		responseresult.ResponseOk(ctx, proto.MSGS2CErr, proto.S2CErr{Error: errors.New("sync builds error")})
+	}
+	log.Info(r)
+}
+/*
+Maps:{
+	"X1,Y1":{"npc":[1,2,3,4],"build":[2,23]},
+	"X2,Y2":{"npc":[3,4],"build":[3,7]},
+}
+*/
+func handleMapsSync(ctx *gin.Context, p *global.Player){
+	r := &proto.C2SMapsSync{}
+	_ = ctx.BindJSON(r)
+	if pplaying.SyncMapS(tr.InterfaceToMStringFace(r.Maps), p){
 		responseresult.ResponseOk(ctx, proto.MSGS2COk, proto.S2COk{})
 	}else{
 		responseresult.ResponseOk(ctx, proto.MSGS2CErr, proto.S2CErr{Error: errors.New("sync builds error")})

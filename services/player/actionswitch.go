@@ -37,6 +37,8 @@ func doHandler(ctx *gin.Context, Proto int, p *global.Player){
 		handleBuildsSync(ctx, p)
 	case proto.MSGC2SNpcsSync: // 处理玩家已解锁npc
 		handleNpcsSync(ctx, p)
+	case proto.MSGC2SMapsSync: // 处理玩家地图数据
+		handleMapsSync(ctx, p)
 	// 14+
 	case proto.MSGC2SMoneyOpt: // 处理玩家货币变更
 		handleMoneyOpt(ctx, p)
