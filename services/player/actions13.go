@@ -10,6 +10,7 @@ import (
 	"github.com/Caproner/DemoGame_Backend/services/pmoney"
 	"github.com/Caproner/DemoGame_Backend/services/pplaying"
 	"github.com/Caproner/DemoGame_Backend/services/ptime"
+	"github.com/Caproner/DemoGame_Backend/utils/database/dbapi"
 	"github.com/Caproner/DemoGame_Backend/utils/log"
 	"github.com/Caproner/DemoGame_Backend/utils/responseresult"
 	"github.com/Caproner/DemoGame_Backend/utils/tr"
@@ -20,6 +21,7 @@ import (
 func handleLoopSync(ctx *gin.Context, p *global.Player){
 	r := ptime.SetTime(timevar.LastActionTimeType,time.Now().Unix(), p)
 	responseresult.ResponseOk(ctx, proto.MSGS2COk, proto.S2COk{})
+	_ = dbapi.UpdateToken(p.OpenID)
 	log.Info(r)
 }
 
